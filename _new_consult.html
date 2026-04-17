@@ -1,0 +1,353 @@
+<!-- ============================================================ -->
+<!-- 화면 4: 상담 이력 조회                                          -->
+<!-- ============================================================ -->
+<div id="view-consult" class="view">
+  <!-- 검색 카드 -->
+  <div class="card search-card">
+    <div class="search-grid-5col">
+      <!-- Row 1: 채널*, 센터*, 그룹, 팀, 상담사 ID -->
+      <div class="search-field"><label class="search-label">채널 <span class="required">*</span></label><select class="search-select"><option>전체</option><option>모바일</option><option>홈</option></select></div>
+      <div class="search-field"><label class="search-label">센터 <span class="required">*</span></label><select class="search-select"><option>전체</option><option>서울센터</option><option>부산센터</option><option>대전센터</option></select></div>
+      <div class="search-field"><label class="search-label">그룹</label><select class="search-select"><option>전체</option></select></div>
+      <div class="search-field"><label class="search-label">팀</label><select class="search-select"><option>전체</option></select></div>
+      <div class="search-field"><label class="search-label">상담사 ID</label><input type="text" class="search-select" maxlength="12" placeholder="최대 12자 이내"></div>
+
+      <!-- Row 2: 상담 방향, 상담 유형, 고객 정보, t-NPS 추천 점수 (span 2) -->
+      <div class="search-field"><label class="search-label">상담 방향</label><select class="search-select"><option>전체</option><option>I/B</option><option>O/B</option></select></div>
+      <div class="search-field"><label class="search-label">상담 유형</label><select class="search-select"><option>전체</option><option>업무처리</option><option>불만</option><option>이벤트</option><option>전용코드</option><option>기타</option><option>TPS 품질조치코드</option><option>TOSS코드</option></select></div>
+      <div class="search-field"><label class="search-label">고객 정보</label><div style="display:flex;gap:8px;"><select class="search-select" style="width:100px;flex-shrink:0;"><option>인입번호</option><option>가입번호</option></select><input type="text" class="search-select" placeholder="숫자 12자 이내" maxlength="12" style="flex:1;"></div></div>
+      <div class="search-field" style="grid-column:span 2;"><label class="search-label">t-NPS 추천 점수</label><div style="display:flex;align-items:center;gap:8px;"><label class="switch"><input type="checkbox"><span class="switch-slider"></span></label></div></div>
+
+      <!-- Row 3: 상담 일자*, 상담 시간대, 통화 시간 (span 2) -->
+      <div class="search-field" style="grid-column:span 2;"><label class="search-label">상담 일자 <span class="required">*</span></label><div class="date-picker-wrap" style="width:100%;"><svg viewBox="0 0 16 16" style="width:16px;height:16px;stroke:#020617;stroke-width:1.5;fill:none;flex-shrink:0;"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M5 2v2M11 2v2M2 7h12"/></svg><input type="text" class="date-input" placeholder="YYYY.MM.DD" style="flex:1;"><span class="date-sep">-</span><input type="text" class="date-input" placeholder="YYYY.MM.DD" style="flex:1;"></div></div>
+      <div class="search-field"><label class="search-label">상담 시간대</label><select class="search-select"><option>0:00~23:00</option></select></div>
+      <div class="search-field" style="grid-column:span 2;"><label class="search-label">통화 시간</label><div class="date-picker-wrap" style="width:100%;"><svg viewBox="0 0 16 16" style="width:16px;height:16px;stroke:#020617;stroke-width:1.5;fill:none;flex-shrink:0;"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg><input type="text" class="date-input" placeholder="SSS초" style="flex:1;"><span class="date-sep">-</span><input type="text" class="date-input" placeholder="SSS초" style="flex:1;"></div></div>
+
+      <!-- Row 4: 상담 코드 (span 5) -->
+      <div class="search-field" style="grid-column:span 5;">
+        <label class="search-label">상담 코드</label>
+        <div style="display:flex;gap:8px;">
+          <select class="search-select" style="flex:1;"><option>대 카테고리</option><option>모바일 &gt; (5G)무선인터넷_품질</option></select>
+          <select class="search-select" style="flex:1;"><option>중 카테고리</option></select>
+          <select class="search-select" style="flex:1;"><option>소 카테고리</option></select>
+          <select class="search-select" style="flex:1;"><option>코드/키워드 검색</option><option>830203 | (5G)모바일_데이터 속...</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="search-footer">
+      <button class="btn btn-outline" onclick="resetConsultSearch()">초기화</button>
+      <button class="btn btn-primary" onclick="doConsultSearch()">검색</button>
+    </div>
+  </div>
+
+  <!-- 검색 전 빈 상태 -->
+  <div id="consult-empty" class="card empty-state-card">
+    <div class="empty-state">
+      <span class="empty-state-text">검색해 주세요</span>
+    </div>
+  </div>
+
+  <!-- 검색 결과 -->
+  <div id="consult-result" style="display:none;">
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="width:100%;overflow-x:auto;">
+        <table class="data-table consult-table" style="min-width:1600px;">
+          <thead>
+            <tr>
+              <th class="col-sortable">상담일자 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">상담시간 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">통화시간 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">상담방향 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">상담유형 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">상담코드 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">상담코드 카테고리 <span class="sort-icon">↕</span></th>
+              <th>인입번호</th>
+              <th>가입번호</th>
+              <th class="col-sortable">센터 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">그룹 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">팀 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">상담사 ID <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">묵음 횟수 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">묵음 시간 <span class="sort-icon">↕</span></th>
+              <th class="col-sortable">추천 점수 <span class="sort-icon">↕</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.15">2026.04.15</td>
+              <td class="td-ellipsis" title="14:20:33">14:20:33</td>
+              <td class="td-ellipsis" title="180초">180초</td>
+              <td class="td-ellipsis" title="IB">IB</td>
+              <td class="td-ellipsis" title="업무처리">업무처리</td>
+              <td class="td-ellipsis" title="830203">830203</td>
+              <td class="td-ellipsis" title="모바일>(5G)무선인터넷_품질>(5G)모바일_데이터 속도느림">모바일>(5G)무선...</td>
+              <td class="td-ellipsis" title="010-****-1234">010-****-1234</td>
+              <td class="td-ellipsis" title="********1234">********1234</td>
+              <td class="td-ellipsis" title="서울센터">서울센터</td>
+              <td class="td-ellipsis" title="1그룹">1그룹</td>
+              <td class="td-ellipsis" title="1팀">1팀</td>
+              <td class="td-ellipsis" title="agent001">agent001</td>
+              <td class="td-ellipsis" title="3회">3회</td>
+              <td class="td-ellipsis" title="45초">45초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.15">2026.04.15</td>
+              <td class="td-ellipsis" title="13:45:12">13:45:12</td>
+              <td class="td-ellipsis" title="240초">240초</td>
+              <td class="td-ellipsis" title="OB">OB</td>
+              <td class="td-ellipsis" title="불만">불만</td>
+              <td class="td-ellipsis" title="710105">710105</td>
+              <td class="td-ellipsis" title="모바일>요금제_변경>요금제_안내">모바일>요금제_변...</td>
+              <td class="td-ellipsis" title="010-****-5678">010-****-5678</td>
+              <td class="td-ellipsis" title="********5678">********5678</td>
+              <td class="td-ellipsis" title="부산센터">부산센터</td>
+              <td class="td-ellipsis" title="2그룹">2그룹</td>
+              <td class="td-ellipsis" title="3팀">3팀</td>
+              <td class="td-ellipsis" title="agent012">agent012</td>
+              <td class="td-ellipsis" title="1회">1회</td>
+              <td class="td-ellipsis" title="12초">12초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.15">2026.04.15</td>
+              <td class="td-ellipsis" title="11:30:05">11:30:05</td>
+              <td class="td-ellipsis" title="95초">95초</td>
+              <td class="td-ellipsis" title="IB">IB</td>
+              <td class="td-ellipsis" title="업무처리">업무처리</td>
+              <td class="td-ellipsis" title="520301">520301</td>
+              <td class="td-ellipsis" title="홈>인터넷_장애>속도저하">홈>인터넷_장애>...</td>
+              <td class="td-ellipsis" title="010-****-9012">010-****-9012</td>
+              <td class="td-ellipsis" title="********9012">********9012</td>
+              <td class="td-ellipsis" title="대전센터">대전센터</td>
+              <td class="td-ellipsis" title="1그룹">1그룹</td>
+              <td class="td-ellipsis" title="2팀">2팀</td>
+              <td class="td-ellipsis" title="agent045">agent045</td>
+              <td class="td-ellipsis" title="0회">0회</td>
+              <td class="td-ellipsis" title="0초">0초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.14">2026.04.14</td>
+              <td class="td-ellipsis" title="16:55:20">16:55:20</td>
+              <td class="td-ellipsis" title="320초">320초</td>
+              <td class="td-ellipsis" title="IB">IB</td>
+              <td class="td-ellipsis" title="이벤트">이벤트</td>
+              <td class="td-ellipsis" title="830210">830210</td>
+              <td class="td-ellipsis" title="모바일>(5G)데이터_추가>데이터_쉐어링">모바일>(5G)데이...</td>
+              <td class="td-ellipsis" title="010-****-3456">010-****-3456</td>
+              <td class="td-ellipsis" title="********3456">********3456</td>
+              <td class="td-ellipsis" title="서울센터">서울센터</td>
+              <td class="td-ellipsis" title="3그룹">3그룹</td>
+              <td class="td-ellipsis" title="1팀">1팀</td>
+              <td class="td-ellipsis" title="agent078">agent078</td>
+              <td class="td-ellipsis" title="5회">5회</td>
+              <td class="td-ellipsis" title="68초">68초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.14">2026.04.14</td>
+              <td class="td-ellipsis" title="15:10:48">15:10:48</td>
+              <td class="td-ellipsis" title="150초">150초</td>
+              <td class="td-ellipsis" title="OB">OB</td>
+              <td class="td-ellipsis" title="기타">기타</td>
+              <td class="td-ellipsis" title="910102">910102</td>
+              <td class="td-ellipsis" title="모바일>부가서비스_해지>콜러링">모바일>부가서비...</td>
+              <td class="td-ellipsis" title="010-****-7890">010-****-7890</td>
+              <td class="td-ellipsis" title="********7890">********7890</td>
+              <td class="td-ellipsis" title="부산센터">부산센터</td>
+              <td class="td-ellipsis" title="1그룹">1그룹</td>
+              <td class="td-ellipsis" title="1팀">1팀</td>
+              <td class="td-ellipsis" title="agent023">agent023</td>
+              <td class="td-ellipsis" title="2회">2회</td>
+              <td class="td-ellipsis" title="30초">30초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.14">2026.04.14</td>
+              <td class="td-ellipsis" title="10:22:15">10:22:15</td>
+              <td class="td-ellipsis" title="210초">210초</td>
+              <td class="td-ellipsis" title="IB">IB</td>
+              <td class="td-ellipsis" title="업무처리">업무처리</td>
+              <td class="td-ellipsis" title="620405">620405</td>
+              <td class="td-ellipsis" title="홈>TV_장애>화면끊김">홈>TV_장애>화면...</td>
+              <td class="td-ellipsis" title="010-****-2345">010-****-2345</td>
+              <td class="td-ellipsis" title="********2345">********2345</td>
+              <td class="td-ellipsis" title="대전센터">대전센터</td>
+              <td class="td-ellipsis" title="2그룹">2그룹</td>
+              <td class="td-ellipsis" title="1팀">1팀</td>
+              <td class="td-ellipsis" title="agent056">agent056</td>
+              <td class="td-ellipsis" title="1회">1회</td>
+              <td class="td-ellipsis" title="15초">15초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.13">2026.04.13</td>
+              <td class="td-ellipsis" title="09:05:33">09:05:33</td>
+              <td class="td-ellipsis" title="420초">420초</td>
+              <td class="td-ellipsis" title="IB">IB</td>
+              <td class="td-ellipsis" title="불만">불만</td>
+              <td class="td-ellipsis" title="830115">830115</td>
+              <td class="td-ellipsis" title="모바일>통화_품질>통화끊김">모바일>통화_품질...</td>
+              <td class="td-ellipsis" title="010-****-6789">010-****-6789</td>
+              <td class="td-ellipsis" title="********6789">********6789</td>
+              <td class="td-ellipsis" title="서울센터">서울센터</td>
+              <td class="td-ellipsis" title="2그룹">2그룹</td>
+              <td class="td-ellipsis" title="2팀">2팀</td>
+              <td class="td-ellipsis" title="agent089">agent089</td>
+              <td class="td-ellipsis" title="7회">7회</td>
+              <td class="td-ellipsis" title="92초">92초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.13">2026.04.13</td>
+              <td class="td-ellipsis" title="17:40:02">17:40:02</td>
+              <td class="td-ellipsis" title="60초">60초</td>
+              <td class="td-ellipsis" title="OB">OB</td>
+              <td class="td-ellipsis" title="전용코드">전용코드</td>
+              <td class="td-ellipsis" title="440201">440201</td>
+              <td class="td-ellipsis" title="모바일>로밍_안내>해외로밍_요금">모바일>로밍_안내...</td>
+              <td class="td-ellipsis" title="010-****-0123">010-****-0123</td>
+              <td class="td-ellipsis" title="********0123">********0123</td>
+              <td class="td-ellipsis" title="서울센터">서울센터</td>
+              <td class="td-ellipsis" title="1그룹">1그룹</td>
+              <td class="td-ellipsis" title="3팀">3팀</td>
+              <td class="td-ellipsis" title="agent034">agent034</td>
+              <td class="td-ellipsis" title="0회">0회</td>
+              <td class="td-ellipsis" title="0초">0초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.12">2026.04.12</td>
+              <td class="td-ellipsis" title="12:15:44">12:15:44</td>
+              <td class="td-ellipsis" title="275초">275초</td>
+              <td class="td-ellipsis" title="IB">IB</td>
+              <td class="td-ellipsis" title="업무처리">업무처리</td>
+              <td class="td-ellipsis" title="710302">710302</td>
+              <td class="td-ellipsis" title="모바일>요금_청구>청구서_재발행">모바일>요금_청구...</td>
+              <td class="td-ellipsis" title="010-****-4567">010-****-4567</td>
+              <td class="td-ellipsis" title="********4567">********4567</td>
+              <td class="td-ellipsis" title="부산센터">부산센터</td>
+              <td class="td-ellipsis" title="3그룹">3그룹</td>
+              <td class="td-ellipsis" title="2팀">2팀</td>
+              <td class="td-ellipsis" title="agent067">agent067</td>
+              <td class="td-ellipsis" title="4회">4회</td>
+              <td class="td-ellipsis" title="55초">55초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+            <tr class="consult-row" onclick="switchView('consult-detail',null)">
+              <td class="td-ellipsis" title="2026.04.12">2026.04.12</td>
+              <td class="td-ellipsis" title="08:50:19">08:50:19</td>
+              <td class="td-ellipsis" title="130초">130초</td>
+              <td class="td-ellipsis" title="IB">IB</td>
+              <td class="td-ellipsis" title="업무처리">업무처리</td>
+              <td class="td-ellipsis" title="830501">830501</td>
+              <td class="td-ellipsis" title="모바일>(LTE)데이터_속도>속도측정_안내">모바일>(LTE)데이...</td>
+              <td class="td-ellipsis" title="010-****-8901">010-****-8901</td>
+              <td class="td-ellipsis" title="********8901">********8901</td>
+              <td class="td-ellipsis" title="대전센터">대전센터</td>
+              <td class="td-ellipsis" title="1그룹">1그룹</td>
+              <td class="td-ellipsis" title="1팀">1팀</td>
+              <td class="td-ellipsis" title="agent091">agent091</td>
+              <td class="td-ellipsis" title="2회">2회</td>
+              <td class="td-ellipsis" title="22초">22초</td>
+              <td class="td-ellipsis" title="-">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" style="padding:12px 24px;">
+        <span class="page-info">총 1,234건</span>
+        <div class="page-controls">
+          <span class="page-num">1 / 124</span>
+          <button class="btn btn-outline btn-sm">«</button>
+          <button class="btn btn-outline btn-sm">‹</button>
+          <button class="btn btn-outline btn-sm">›</button>
+          <button class="btn btn-outline btn-sm">»</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /view-consult -->
+
+<!-- ============================================================ -->
+<!-- 화면 4-1: 상담 이력 상세                                        -->
+<!-- ============================================================ -->
+<div id="view-consult-detail" class="view">
+  <!-- 상단 바 -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+    <button class="btn btn-ghost btn-sm" onclick="switchView('consult',document.querySelector('[data-view=consult]'))">← 상담 이력 조회</button>
+    <button class="btn btn-outline btn-sm">🎧 콜 청취</button>
+  </div>
+
+  <!-- 상담 정보 카드 -->
+  <div class="card">
+    <div class="card-header"><div class="card-header-text"><span class="card-title">상담 정보</span></div></div>
+    <div class="desc-grid">
+      <!-- Row 1: 조직/상담사 -->
+      <div class="desc-item"><span class="desc-label">채널</span><span class="desc-value">모바일</span></div>
+      <div class="desc-item"><span class="desc-label">센터</span><span class="desc-value">서울센터</span></div>
+      <div class="desc-item"><span class="desc-label">그룹</span><span class="desc-value">1그룹</span></div>
+      <div class="desc-item"><span class="desc-label">팀</span><span class="desc-value">1팀</span></div>
+      <div class="desc-item"><span class="desc-label">상담사 ID</span><span class="desc-value">agent001</span></div>
+      <!-- Row 2: 상담 기본 -->
+      <div class="desc-item"><span class="desc-label">상담일자</span><span class="desc-value">2026.04.15</span></div>
+      <div class="desc-item"><span class="desc-label">상담시간</span><span class="desc-value">14:20:33</span></div>
+      <div class="desc-item"><span class="desc-label">통화시간</span><span class="desc-value">180초</span></div>
+      <div class="desc-item"><span class="desc-label">상담유형</span><span class="desc-value">업무처리</span></div>
+      <div class="desc-item"><span class="desc-label">상담방향</span><span class="desc-value">IB</span></div>
+      <!-- Row 3: 상담 코드 -->
+      <div class="desc-item"><span class="desc-label">상담코드(대)</span><span class="desc-value">모바일</span></div>
+      <div class="desc-item"><span class="desc-label">상담코드(중)</span><span class="desc-value">(5G)무선인터넷_품질</span></div>
+      <div class="desc-item"><span class="desc-label">상담코드(소)</span><span class="desc-value">(5G)모바일_데이터 속도느림</span></div>
+      <div class="desc-item"><span class="desc-label">상담코드 번호</span><span class="desc-value">830203</span></div>
+      <div class="desc-item"></div>
+      <!-- Row 4: 고객 정보 -->
+      <div class="desc-item"><span class="desc-label">인입번호</span><span class="desc-value">010-****-1234</span></div>
+      <div class="desc-item"><span class="desc-label">가입번호</span><span class="desc-value">********1234</span></div>
+      <div class="desc-item"></div>
+      <div class="desc-item"></div>
+      <div class="desc-item"></div>
+      <!-- Row 5: 품질 지표 -->
+      <div class="desc-item"><span class="desc-label">t-NPS 추천 점수</span><span class="desc-value">-</span></div>
+      <div class="desc-item"><span class="desc-label">묵음 횟수</span><span class="desc-value">3회</span></div>
+      <div class="desc-item"><span class="desc-label">묵음 시간</span><span class="desc-value">45초</span></div>
+      <div class="desc-item"></div>
+      <div class="desc-item"></div>
+    </div>
+  </div>
+
+  <!-- STT + AI 요약 -->
+  <div class="row" style="align-items:flex-start;">
+    <!-- STT 카드 -->
+    <div class="card" style="flex:1;max-height:600px;overflow-y:auto;">
+      <div class="card-header"><div class="card-header-text"><span class="card-title">STT</span></div></div>
+      <div class="chat-area">
+        <div class="chat-bubble incoming"><div class="chat-text">안녕하세요, 5G 데이터 속도가 너무 느려서 전화드렸습니다.</div><div class="chat-time">14:20:33</div></div>
+        <div class="chat-bubble outgoing"><div class="chat-text">안녕하세요, 고객님. LG U+ 고객센터입니다. 데이터 속도 관련 불편을 겪고 계시군요. 확인 도와드리겠습니다.</div><div class="chat-time">14:20:45</div></div>
+        <div class="chat-bubble incoming"><div class="chat-text">네, 어제부터 갑자기 속도가 확 떨어졌어요. 영상도 끊기고 앱 로딩도 오래 걸려요.</div><div class="chat-time">14:21:10</div></div>
+        <div class="chat-bubble outgoing"><div class="chat-text">불편을 드려 죄송합니다. 고객님 지역의 기지국 상태를 확인해 보겠습니다. 잠시만 기다려 주세요.</div><div class="chat-time">14:21:25</div></div>
+        <div class="chat-bubble outgoing"><div class="chat-text">확인 결과, 고객님 지역에서 기지국 증설 공사가 진행 중이어서 일시적으로 속도가 저하되고 있습니다. 이번 주 금요일까지 완료 예정입니다.</div><div class="chat-time">14:22:00</div></div>
+        <div class="chat-bubble incoming"><div class="chat-text">아, 그렇군요. 금요일까지면 좀 기다려야 하네요.</div><div class="chat-time">14:22:20</div></div>
+        <div class="chat-bubble outgoing"><div class="chat-text">네, 불편을 드려 죄송합니다. 공사 완료 후에도 속도 문제가 지속되시면 다시 연락 주시면 추가 조치 도와드리겠습니다.</div><div class="chat-time">14:22:45</div></div>
+        <div class="chat-bubble incoming"><div class="chat-text">네, 알겠습니다. 감사합니다.</div><div class="chat-time">14:23:10</div></div>
+        <div class="chat-bubble outgoing"><div class="chat-text">감사합니다. 좋은 하루 되세요.</div><div class="chat-time">14:23:20</div></div>
+      </div>
+    </div>
+
+    <!-- AI 상담 요약 카드 -->
+    <div class="card" style="flex:1;">
+      <div class="card-header"><div class="card-header-text"><span class="card-title">AI 상담 요약</span></div></div>
+      <div>
+        <div class="ai-summary-section">
+          <div class="ai-summary-title">고객 요청 요약</div>
+          <p style="font-size:14px;line-height:22px;color:#020617;">고객이 5G 데이터 속도가 어제부터 급격히 저하되어 영상 시청 시 끊김 현상과 앱 로딩 지연이 발생한다고 문의함. 속도 저하 원인 확인 및 해결 방안을 요청함.</p>
+        </div>
+        <div class="ai-summary-section">
+          <div class="ai-summary-title">상담사 처리 요약</div>
+          <p style="font-size:14px;line-height:22px;color:#020617;">고객 지역 기지국 상태 확인 결과, 기지국 증설 공사가 진행 중이며 금요일까지 완료 예정임을 안내함. 공사 완료 후에도 속도 문제 지속 시 재연락을 통한 추가 조치를 안내함.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /view-consult-detail -->
