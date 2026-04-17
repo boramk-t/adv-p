@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상담어드바이저 포털 - 접근 인증</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Pretendard',sans-serif;background:#F8FAFC;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+.lock-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:48px;width:400px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);text-align:center;}
+.lock-logo{width:48px;height:48px;background:#F1F5F9;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.lock-logo svg{width:32px;height:28px;}
+.lock-title{font-size:20px;font-weight:600;color:#020617;margin-bottom:4px;}
+.lock-desc{font-size:14px;color:#64748B;margin-bottom:24px;}
+.lock-input{width:100%;height:44px;padding:8px 16px;border:1px solid #E2E8F0;border-radius:8px;font-family:'Pretendard';font-size:16px;color:#020617;outline:none;text-align:center;letter-spacing:4px;margin-bottom:12px;}
+.lock-input:focus{border-color:#7732F8;box-shadow:0 0 0 3px rgba(119,50,248,.1);}
+.lock-input.error{border-color:#EF4444;animation:shake .3s;}
+.lock-btn{width:100%;height:44px;background:#7732F8;color:#F8FAFC;border:none;border-radius:8px;font-family:'Pretendard';font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;}
+.lock-btn:hover{background:#6525E0;}
+.lock-error{font-size:13px;color:#EF4444;margin-top:8px;display:none;}
+.lock-error.show{display:block;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+</style>
+</head>
+<body>
+<div class="lock-card">
+  <div class="lock-logo">
+    <svg viewBox="0 0 24 22" fill="none">
+      <rect x="3" y="14" width="8" height="4" rx="1" fill="#22171C"/>
+      <rect x="10" y="3.5" width="11" height="14" rx="2" fill="#7732F8"/>
+      <rect x="3" y="3.5" width="7" height="14" rx="2" fill="#FF2298"/>
+    </svg>
+  </div>
+  <h1 class="lock-title">상담어드바이저 포털</h1>
+  <p class="lock-desc">접근 비밀번호를 입력해주세요</p>
+  <form id="lock-form">
+    <input type="password" id="pw-input" class="lock-input" placeholder="비밀번호" autofocus>
+    <button type="submit" class="lock-btn">접속</button>
+  </form>
+  <p class="lock-error" id="pw-error">비밀번호가 올바르지 않습니다.</p>
+</div>
+<script>
+// Check if already authenticated
+if(sessionStorage.getItem('adv-auth')==='ok'){window.location.replace('portal.html');}
+
+document.getElementById('lock-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var input=document.getElementById('pw-input');
+  var error=document.getElementById('pw-error');
+  // Hash check using SHA-256
+  crypto.subtle.digest('SHA-256',new TextEncoder().encode(input.value)).then(function(buf){
+    var hash=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    // SHA-256 of "ADV2604"
+    if(hash==='2cc1a12354b6af0f5839ef7f427ba6b73d0b0b1e6da294f3961429dbf95d327b'){
+      sessionStorage.setItem('adv-auth','ok');
+      window.location.href='portal.html';
+    } else {
+      input.classList.add('error');
+      error.classList.add('show');
+      setTimeout(function(){input.classList.remove('error');},300);
+      input.value='';
+      input.focus();
+    }
+  });
+});
+</script>
+</body>
+</html>
