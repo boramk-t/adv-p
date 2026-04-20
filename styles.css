@@ -148,7 +148,7 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#020617;font-s
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:9999px;font-size:12px;font-weight:500;line-height:16px;}
 .badge-primary{background:#7732F8;color:#F8FAFC;}
 .badge-outline{background:#FFFFFF;border:1px solid #E2E8F0;color:#020617;}
-.badge-muted{background:#F1F5F9;color:#0F172A;}
+.badge-muted{background:#F1F5F9;color:#0F172A;white-space:nowrap;}
 .badge-destructive{background:#DC2626;color:#FFFFFF;}
 
 /* ===== Pagination ===== */
