@@ -338,7 +338,7 @@ input.search-select{cursor:text;}
 .breadcrumb-parent:hover{text-decoration:underline;}
 
 /* ===== Column Group Header ===== */
-.col-group-header{display:flex;gap:0;border-bottom:1px solid #E2E8F0;overflow:hidden;white-space:nowrap;min-width:0;}
+.col-group-header{display:flex;gap:0;border-bottom:1px solid #E2E8F0;white-space:nowrap;min-width:0;}
 .col-group-label{padding:8px 12px;font-size:13px;font-weight:600;color:#020617;border-right:1px solid #E2E8F0;flex-shrink:0;}
 .col-group-label:last-child{border-right:none;}
 
