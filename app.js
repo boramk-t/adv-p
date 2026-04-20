@@ -25,9 +25,6 @@ function switchView(view, btn) {
     btn.classList.add('active');
   }
 
-  // Update breadcrumb
-  document.getElementById('breadcrumb').textContent = viewTitles[view] || '';
-
   // Init charts if needed — use rAF to ensure the view is visible before Chart.js measures canvas
   if (view === 'stats') requestAnimationFrame(function(){ requestAnimationFrame(initStatsCharts); });
   if (view === 'accuracy') requestAnimationFrame(function(){ requestAnimationFrame(initAccuracyChart); });
@@ -291,14 +288,14 @@ switchView = function(view, btn) {
   var area = document.getElementById('breadcrumb-area');
   if (area) {
     if (view === 'consult-detail') {
-      area.innerHTML = '<span class="breadcrumb-parent" onclick="switchView(\'consult\',document.querySelector(\'[data-view=consult]\'))">상담 이력 조회</span><span class="breadcrumb-sep">&rsaquo;</span><span class="breadcrumb-title">상담 이력 상세</span>';
+      area.innerHTML = '<span class="breadcrumb-parent" onclick="switchView(\'consult\',document.querySelector(\'[data-view=consult]\'))">상담 이력 조회</span><span class="breadcrumb-sep">&rsaquo;</span><span class="breadcrumb-title" id="breadcrumb">상담 이력 상세</span>';
     } else if (view === 'ai-eval') {
-      area.innerHTML = '<span class="breadcrumb-parent" onclick="switchView(\'ai-manage\',document.querySelector(\'[data-view=ai-manage]\'))">AI 정확도 관리</span><span class="breadcrumb-sep">&rsaquo;</span><span class="breadcrumb-title">AI 정확도 평가</span>';
+      area.innerHTML = '<span class="breadcrumb-parent" onclick="switchView(\'ai-manage\',document.querySelector(\'[data-view=ai-manage]\'))">AI 정확도 관리</span><span class="breadcrumb-sep">&rsaquo;</span><span class="breadcrumb-title" id="breadcrumb">AI 정확도 평가</span>';
     } else if (view === 'notice-detail' || view === 'notice-write') {
       var label = view === 'notice-detail' ? '게시글' : '글 작성';
-      area.innerHTML = '<span class="breadcrumb-parent" onclick="switchView(\'notice\',document.querySelector(\'[data-view=notice]\'))">공지사항</span><span class="breadcrumb-sep">&rsaquo;</span><span class="breadcrumb-title">' + label + '</span>';
+      area.innerHTML = '<span class="breadcrumb-parent" onclick="switchView(\'notice\',document.querySelector(\'[data-view=notice]\'))">공지사항</span><span class="breadcrumb-sep">&rsaquo;</span><span class="breadcrumb-title" id="breadcrumb">' + label + '</span>';
     } else {
-      area.innerHTML = '<span class="breadcrumb-title">' + (viewTitles[view] || '') + '</span>';
+      area.innerHTML = '<span class="breadcrumb-title" id="breadcrumb">' + (viewTitles[view] || '') + '</span>';
     }
   }
 };
