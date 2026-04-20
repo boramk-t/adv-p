@@ -36,6 +36,15 @@ function toggleTab(el) {
   el.classList.add('active');
 }
 
+/* ===== Home Tab Toggle (모바일/홈) ===== */
+function toggleHomeTab(el, tabId) {
+  el.parentElement.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#view-home .home-tab-content').forEach(function(c) { c.style.display = 'none'; });
+  var target = document.getElementById(tabId);
+  if (target) target.style.display = 'flex';
+}
+
 /* ===== Eval Tab Toggle ===== */
 function toggleEvalTab(el, tabId) {
   // Toggle tab triggers

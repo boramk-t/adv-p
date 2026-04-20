@@ -119,10 +119,12 @@
 <!-- ============================================================ -->
 <div id="view-home" class="view active">
   <div class="tabs">
-    <button class="tab-trigger active" onclick="toggleTab(this)">모바일</button>
-    <button class="tab-trigger" onclick="toggleTab(this)">홈</button>
+    <button class="tab-trigger active" onclick="toggleHomeTab(this,'home-mobile')">모바일</button>
+    <button class="tab-trigger" onclick="toggleHomeTab(this,'home-home')">홈</button>
   </div>
 
+  <!-- ===== 모바일 탭 콘텐츠 ===== -->
+  <div id="home-mobile" class="home-tab-content" style="display:flex;flex-direction:column;gap:16px;">
   <!-- Row 1: 도넛(332) + 통계카드 2개(804, 세로) -->
   <div class="row">
     <div class="card" style="width:332px;flex-shrink:0;">
@@ -240,6 +242,69 @@
       </div>
     </div>
   </div>
+  </div><!-- /home-mobile -->
+
+  <!-- ===== 홈 탭 콘텐츠 ===== -->
+  <div id="home-home" class="home-tab-content" style="display:none;flex-direction:column;gap:16px;">
+  <!-- Row 1 -->
+  <div class="row">
+    <div class="card" style="width:332px;flex-shrink:0;">
+      <div class="card-header"><div class="card-header-text"><div class="card-title-row"><span class="card-title">오늘의 이용률</span><span class="help-icon" data-tooltip="오늘 상담중인 상담사 중 상담어드바이저를 이용한 상담사 수입니다."><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6.5 6.5a1.5 1.5 0 113 0c0 1-1.5 1-1.5 2M8 11h.01"/></svg></span></div></div></div>
+      <div class="card-content" style="flex:1;"><div class="donut-wrap"><div class="donut-container"><svg class="donut-svg" viewBox="0 0 212 212"><circle cx="106" cy="106" r="85" fill="none" stroke="#FECDD3" stroke-width="20"/><circle cx="106" cy="106" r="85" fill="none" stroke="#FF009A" stroke-width="20" stroke-dasharray="400.7 133.4" stroke-linecap="round" transform="rotate(-90 106 106)"/></svg><div class="donut-center"><div class="donut-center-value">75%</div></div></div><div class="donut-legend"><div class="donut-legend-item"><span class="donut-legend-dot" style="background:#FECDD3;"></span><span class="donut-legend-label">활성 좌석수</span><span class="donut-legend-value">1,080 석</span></div><div class="donut-legend-item"><span class="donut-legend-dot" style="background:#FF009A;"></span><span class="donut-legend-label">앱 접속자수</span><span class="donut-legend-value">810 명</span></div></div></div></div>
+    </div>
+    <div class="col" style="flex:1;">
+      <div class="card card-sm" style="flex:1;justify-content:space-between;">
+        <div class="kpi-header"><span class="kpi-title">실시간 상담시간</span><span class="help-icon" data-tooltip="현재까지 측정된 실시간 누적 평균 상담 시간 입니다."><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6.5 6.5a1.5 1.5 0 113 0c0 1-1.5 1-1.5 2M8 11h.01"/></svg></span></div>
+        <div class="kpi-content"><div class="kpi-value">284 <span class="kpi-unit">초</span></div><div class="kpi-sub"><span class="kpi-change up">+8.2%</span></div></div>
+      </div>
+      <div class="card card-sm" style="flex:1;justify-content:space-between;">
+        <div class="kpi-header"><span class="kpi-title">당일 상담 누적 콜 수</span><span class="help-icon" data-tooltip="09시~현재까지 채널 상담어드바이저로 연결된 상담 콜 수 입니다."><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6.5 6.5a1.5 1.5 0 113 0c0 1-1.5 1-1.5 2M8 11h.01"/></svg></span></div>
+        <div class="kpi-content"><div class="kpi-value">3,245 <span class="kpi-unit">건</span></div><div class="kpi-sub"><span class="kpi-change up">+8.2%</span></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Row 2 -->
+  <div class="row">
+    <div class="card" style="width:332px;flex-shrink:0;">
+      <div class="card-header"><div class="card-header-text"><div class="card-title-row"><span class="card-title">실시간 지식추천 활용률</span><span class="help-icon" data-tooltip="상담어드바이저 지식 추천을 이용하여 답변을 확인한 비율 입니다."><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6.5 6.5a1.5 1.5 0 113 0c0 1-1.5 1-1.5 2M8 11h.01"/></svg></span></div></div></div>
+      <div class="card-content" style="flex:1;"><div class="donut-wrap"><div class="donut-container"><svg class="donut-svg" viewBox="0 0 212 212"><circle cx="106" cy="106" r="85" fill="none" stroke="#FECDD3" stroke-width="20"/><circle cx="106" cy="106" r="85" fill="none" stroke="#FF009A" stroke-width="20" stroke-dasharray="400.7 133.4" stroke-linecap="round" transform="rotate(-90 106 106)"/></svg><div class="donut-center"><div class="donut-center-value">75%</div></div></div><div class="donut-legend"><div class="donut-legend-item"><span class="donut-legend-dot" style="background:#FECDD3;"></span><span class="donut-legend-label">추천 지식 수</span><span class="donut-legend-value">3,800 건</span></div><div class="donut-legend-item"><span class="donut-legend-dot" style="background:#FF009A;"></span><span class="donut-legend-label">답변 확인 수</span><span class="donut-legend-value">2,850 건</span></div></div></div></div>
+    </div>
+    <div class="card" style="flex:1;">
+      <div class="card-header"><div class="card-header-text"><div class="card-title-row"><span class="card-title">AI 추천 상담코드 TOP 5</span><span class="help-icon" data-tooltip="AI 추천 상담코드 상위 5개입니다."><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6.5 6.5a1.5 1.5 0 113 0c0 1-1.5 1-1.5 2M8 11h.01"/></svg></span></div></div></div>
+      <div class="table-container"><table class="data-table"><thead><tr><th style="width:60px;text-align:center;">순위</th><th>상담코드명</th><th style="width:120px;text-align:right;">추천 횟수</th><th style="width:120px;text-align:right;">변동률</th></tr></thead><tbody>
+        <tr><td class="td-rank">1</td><td>공통_(제휴카드 제외) 자동이체 방법/변경 문의 [320101]</td><td class="td-count">3,987회</td><td class="td-rate up">+11.2%</td></tr>
+        <tr><td class="td-rank">2</td><td>공통_(제휴카드 제외) 자동이체 방법/변경 문의 [320101]</td><td class="td-count">3,987회</td><td class="td-rate up">+11.2%</td></tr>
+        <tr><td class="td-rank">3</td><td>공통_(제휴카드 제외) 자동이체 방법/변경 문의 [320101]</td><td class="td-count">3,987회</td><td class="td-rate up">+11.2%</td></tr>
+        <tr><td class="td-rank">4</td><td>공통_(제휴카드 제외) 자동이체 방법/변경 문의 [320101]</td><td class="td-count">3,987회</td><td class="td-rate down">-11.2%</td></tr>
+        <tr><td class="td-rank">5</td><td>공통_(제휴카드 제외) 자동이체 방법/변경 문의 [320101]</td><td class="td-count">3,987회</td><td class="td-rate down">-11.2%</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+  <!-- Row 3 -->
+  <div class="row">
+    <div class="card" style="flex:1;">
+      <div class="card-header"><div class="card-header-text"><div class="card-title-row"><span class="card-title">실시간 트렌드 지식 출처 TOP 5</span><span class="help-icon" data-tooltip="실시간 트렌드 지식 출처 상위 5개입니다."><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6.5 6.5a1.5 1.5 0 113 0c0 1-1.5 1-1.5 2M8 11h.01"/></svg></span></div></div></div>
+      <div class="table-container"><table class="data-table"><thead><tr><th style="width:60px;text-align:center;">순위</th><th>키워드</th><th>출처</th></tr></thead><tbody>
+        <tr><td class="td-rank">1</td><td class="td-link">[모바일] 5G 요금제</td><td style="color:#64748B;">모바일 > 요금제 >5G요금제 > 5...</td></tr>
+        <tr><td class="td-rank">2</td><td class="td-link">[모바일] 5G 요금제</td><td style="color:#64748B;">모바일 > 요금제 >5G요금제 > 5...</td></tr>
+        <tr><td class="td-rank">3</td><td class="td-link">[모바일] 5G 요금제</td><td style="color:#64748B;">모바일 > 요금제 >5G요금제 > 5...</td></tr>
+        <tr><td class="td-rank">4</td><td class="td-link">[모바일] 5G 요금제</td><td style="color:#64748B;">모바일 > 요금제 >5G요금제 > 5...</td></tr>
+        <tr><td class="td-rank">5</td><td class="td-link">[모바일] 5G 요금제</td><td style="color:#64748B;">모바일 > 요금제 >5G요금제 > 5...</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="card" style="flex:1;">
+      <div class="card-header"><div class="card-header-text"><div class="card-title-row"><span class="card-title">인입 이력 정보 문자 TOP 5</span><span class="help-icon" data-tooltip="인입 이력 정보 문자 상위 5개입니다."><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6.5 6.5a1.5 1.5 0 113 0c0 1-1.5 1-1.5 2M8 11h.01"/></svg></span></div></div></div>
+      <div class="table-container"><table class="data-table"><thead><tr><th style="width:60px;text-align:center;">순위</th><th>키워드</th><th style="text-align:right;">최근 인입 시간</th></tr></thead><tbody>
+        <tr><td class="td-rank">1</td><td class="td-link">가족사항 데이터 추가</td><td class="td-time">2026.01.01 03:00</td></tr>
+        <tr><td class="td-rank">2</td><td class="td-link">가족사항 데이터 추가</td><td class="td-time">2026.01.01 03:00</td></tr>
+        <tr><td class="td-rank">3</td><td class="td-link">가족사항 데이터 추가</td><td class="td-time">2026.01.01 03:00</td></tr>
+        <tr><td class="td-rank">4</td><td class="td-link">가족사항 데이터 추가</td><td class="td-time">2026.01.01 03:00</td></tr>
+        <tr><td class="td-rank">5</td><td class="td-link">가족사항 데이터 추가</td><td class="td-time">2026.01.01 03:00</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+  </div><!-- /home-home -->
+
 </div><!-- /view-home -->
 
 <!-- ============================================================ -->
