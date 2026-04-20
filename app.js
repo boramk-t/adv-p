@@ -28,9 +28,9 @@ function switchView(view, btn) {
   // Update breadcrumb
   document.getElementById('breadcrumb').textContent = viewTitles[view] || '';
 
-  // Init charts if needed
-  if (view === 'stats') setTimeout(initStatsCharts, 80);
-  if (view === 'accuracy') setTimeout(initAccuracyChart, 80);
+  // Init charts if needed — use rAF to ensure the view is visible before Chart.js measures canvas
+  if (view === 'stats') requestAnimationFrame(function(){ requestAnimationFrame(initStatsCharts); });
+  if (view === 'accuracy') requestAnimationFrame(function(){ requestAnimationFrame(initAccuracyChart); });
 }
 
 /* ===== Tab Toggle ===== */
@@ -88,10 +88,11 @@ const gridColor = 'rgba(226,232,240,0.8)';
 const tickFont = { size: 12, family: 'Pretendard' };
 const tickColor = '#64748B';
 
-let statsChartsInit = false;
+let statsChartInstances = [];
 function initStatsCharts() {
-  if (statsChartsInit) return;
-  statsChartsInit = true;
+  // Destroy existing chart instances so they re-render at correct size
+  statsChartInstances.forEach(function(c) { c.destroy(); });
+  statsChartInstances = [];
 
   var labels14 = ['04/02','04/03','04/04','04/05','04/06','04/07','04/08','04/09','04/10','04/11','04/12','04/13','04/14','04/15'];
   var commonOpts = {
@@ -111,7 +112,7 @@ function initStatsCharts() {
   /* 운영 효율 추이 — Dual Y-Axis */
   var ctxEff = document.getElementById('chart-efficiency');
   if (ctxEff) {
-    new Chart(ctxEff, {
+    statsChartInstances.push(new Chart(ctxEff, {
       type: 'line',
       data: {
         labels: labels14,
@@ -145,13 +146,13 @@ function initStatsCharts() {
           y1: { position: 'right', title: { display: true, text: '상담시간 (초)', font: { size: 11, family: 'Pretendard' }, color: tickColor }, ticks: { font: tickFont, color: tickColor }, grid: { drawOnChartArea: false }, border: { display: false } }
         }
       }
-    });
+    }));
   }
 
   /* 시스템 활용도 추이 — Single Y-Axis (%) */
   var ctxUtil = document.getElementById('chart-utilization');
   if (ctxUtil) {
-    new Chart(ctxUtil, {
+    statsChartInstances.push(new Chart(ctxUtil, {
       type: 'line',
       data: {
         labels: labels14,
@@ -182,14 +183,14 @@ function initStatsCharts() {
           y: { min: 40, max: 80, title: { display: true, text: '%', font: { size: 11, family: 'Pretendard' }, color: tickColor }, ticks: { font: tickFont, color: tickColor, callback: function(v) { return v + '%'; } }, grid: { color: 'rgba(226,232,240,0.5)', drawBorder: false }, border: { display: false } }
         }
       }
-    });
+    }));
   }
 }
 
-let accuracyChartInit = false;
+let accuracyChartInstance = null;
 function initAccuracyChart() {
-  if (accuracyChartInit) return;
-  accuracyChartInit = true;
+  // Destroy existing chart instance so it re-renders at correct size
+  if (accuracyChartInstance) { accuracyChartInstance.destroy(); accuracyChartInstance = null; }
 
   var labels14 = ['04/02','04/03','04/04','04/05','04/06','04/07','04/08','04/09','04/10','04/11','04/12','04/13','04/14','04/15'];
   var commonOpts = {
@@ -208,7 +209,7 @@ function initAccuracyChart() {
 
   var ctx = document.getElementById('chart-accuracy');
   if (ctx) {
-    new Chart(ctx, {
+    accuracyChartInstance = new Chart(ctx, {
       type: 'line',
       data: {
         labels: labels14,
@@ -418,4 +419,76 @@ function completeEvalTab(tabId) {
   // Re-render badges
   var activeTab = document.querySelector('.eval-tabs .tab-trigger.active');
   if (activeTab) switchEvalTab(activeTab, activeTab.getAttribute('data-eval-tab'));
+}
+
+/* ===== Notice Search ===== */
+function doNoticeSearch() {
+  var input = document.getElementById('notice-search-input');
+  var keyword = (input && input.value || '').trim();
+  var listArea = document.getElementById('notice-list-area');
+  var emptyArea = document.getElementById('notice-empty');
+  if (!keyword) {
+    // Show all
+    if (listArea) listArea.style.display = '';
+    if (emptyArea) emptyArea.style.display = 'none';
+    return;
+  }
+  // Simulate search — in real app this would filter
+  // For demo, show empty state if keyword doesn't match
+  var found = false;
+  var rows = document.querySelectorAll('#notice-list-area tbody tr');
+  rows.forEach(function(row) {
+    var title = row.querySelector('.td-link');
+    if (title && title.textContent.indexOf(keyword) !== -1) found = true;
+  });
+  if (found) {
+    if (listArea) listArea.style.display = '';
+    if (emptyArea) emptyArea.style.display = 'none';
+  } else {
+    if (listArea) listArea.style.display = 'none';
+    if (emptyArea) emptyArea.style.display = 'flex';
+  }
+}
+
+/* ===== Notice Write: Service checkbox logic ===== */
+function handleNoticeServiceCheck(el, type) {
+  var items = document.querySelectorAll('.notice-svc-item');
+  if (type === 'all') {
+    // "전체" selected — uncheck others
+    if (el.checked) {
+      items.forEach(function(cb) { cb.checked = false; cb.disabled = true; });
+    } else {
+      items.forEach(function(cb) { cb.disabled = false; });
+    }
+  } else {
+    // Individual item — uncheck "전체"
+    var allCb = el.closest('.form-field').querySelector('input[type="checkbox"]:first-of-type');
+    if (allCb && allCb !== el) { /* handled by onchange on all */ }
+  }
+}
+
+/* ===== Notice Write: Toggle pin/banner date fields ===== */
+function toggleNoticePinDates() {
+  var toggle = document.getElementById('notice-pin-toggle');
+  var dates = document.getElementById('notice-pin-dates');
+  if (dates) dates.style.display = toggle && toggle.checked ? 'flex' : 'none';
+}
+function toggleNoticeBannerDates() {
+  var toggle = document.getElementById('notice-banner-toggle');
+  var dates = document.getElementById('notice-banner-dates');
+  if (dates) dates.style.display = toggle && toggle.checked ? 'flex' : 'none';
+}
+
+/* ===== Notice Write: Modals ===== */
+function showNoticeLeaveModal() {
+  var modal = document.getElementById('notice-leave-modal');
+  if (modal) modal.style.display = 'flex';
+}
+function showNoticeTempSaveModal() {
+  var modal = document.getElementById('notice-temp-save-modal');
+  if (modal) modal.style.display = 'flex';
+}
+function showNoticePublishModal() {
+  var modal = document.getElementById('notice-publish-modal');
+  if (modal) modal.style.display = 'flex';
 }

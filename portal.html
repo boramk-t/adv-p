@@ -86,6 +86,7 @@
         <button class="sidebar-menu-btn" data-view="notice" onclick="switchView('notice',this)">
           <span class="icon"><svg viewBox="0 0 16 16"><path d="M3 5l5-3 5 3v5c0 3-2.5 5-5 6-2.5-1-5-3-5-6V5z"/></svg></span>
           공지사항
+          <span class="badge badge-destructive" id="sidebar-notice-new" style="font-size:10px;padding:1px 5px;margin-left:auto;">N</span>
         </button>
       </div>
     </div>
@@ -383,7 +384,7 @@
       <div class="search-field"><label class="search-label">상담 방향</label><select class="search-select"><option>전체</option><option>인바운드</option><option>아웃바운드</option></select></div>
       <div class="search-field"><label class="search-label">상담 유형</label><select class="search-select"><option>전체</option></select></div>
       <div class="search-field"><label class="search-label">고객 정보</label><div style="display:flex;gap:8px;"><select class="search-select" style="width:80px;flex-shrink:0;"></select><input type="text" class="search-select" placeholder="숫자 12자 이내" style="flex:1;"></div></div>
-      <div class="search-field" style="grid-column:span 2;"><label class="search-label">t-NPS 추천 점수</label><div style="display:flex;align-items:center;gap:8px;"><div class="tnps-toggle"><span class="tnps-dot"></span></div></div></div>
+      <div class="search-field" style="grid-column:span 2;"><label class="search-label">t-NPS 추천 점수</label><div style="display:flex;align-items:center;gap:8px;"><input type="text" class="search-select" placeholder="0" style="width:60px;text-align:center;"><span style="color:#64748B;">~</span><input type="text" class="search-select" placeholder="10" style="width:60px;text-align:center;"></div></div>
 
       <!-- Row 3: 상담 일자*, 상담 시간대, 통화 시간 (span 2) -->
       <div class="search-field" style="grid-column:span 2;"><label class="search-label">상담 일자 <span class="required">*</span></label><div class="date-picker-wrap" style="width:100%;"><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M5 2v2M11 2v2M2 7h12"/></svg><input type="text" class="date-input" placeholder="YYYY.MM.DD" style="flex:1;"><span class="date-sep">-</span><input type="text" class="date-input" placeholder="YYY.MM.DD" style="flex:1;"></div></div>
@@ -593,13 +594,13 @@
   <!-- 검색 결과 -->
   <div id="ai-manage-result" style="display:none;">
     <div class="card" style="padding:0;overflow:hidden;">
-      <!-- 컬럼 그룹 헤더 -->
-      <div class="col-group-header">
-        <span class="col-group-label" style="min-width:900px;">상담 정보</span>
-        <span class="col-group-label" style="min-width:500px;">평가 정보</span>
-        <span class="col-group-label" style="min-width:400px;">인사 정보</span>
-      </div>
       <div class="consult-scroll-wrap">
+        <!-- 컬럼 그룹 헤더 -->
+        <div class="col-group-header">
+          <span class="col-group-label" style="min-width:900px;">상담 정보</span>
+          <span class="col-group-label" style="min-width:500px;">평가 정보</span>
+          <span class="col-group-label" style="min-width:400px;">인사 정보</span>
+        </div>
         <table class="data-table consult-result-table" style="min-width:1800px;">
           <thead><tr>
             <th class="th-sticky">상담 일자 <span class="sort-icon">↕</span></th>
@@ -1032,51 +1033,89 @@
       <div class="card-header-text"><span class="card-title">공지사항</span></div>
       <button class="btn btn-primary btn-sm" onclick="switchView('notice-write',null)">+ 글 작성</button>
     </div>
-    <div class="table-container">
-      <table class="data-table"><thead><tr>
-        <th style="width:60px;text-align:center;">번호</th><th style="width:80px;">분류</th><th>제목</th><th style="width:100px;">작성자</th><th style="width:120px;">등록일</th>
-      </tr></thead>
-      <tbody>
-        <tr><td style="text-align:center;">15</td><td><span class="badge badge-primary">공지</span></td><td class="td-link" onclick="switchView('notice-detail',null)">상담어드바이저 v3.2 업데이트 안내</td><td>관리자</td><td>2026-04-15</td></tr>
-        <tr><td style="text-align:center;">14</td><td><span class="badge badge-muted">안내</span></td><td class="td-link" onclick="switchView('notice-detail',null)">4월 시스템 정기점검 일정 안내</td><td>관리자</td><td>2026-04-12</td></tr>
-        <tr><td style="text-align:center;">13</td><td><span class="badge badge-primary">공지</span></td><td class="td-link" onclick="switchView('notice-detail',null)">AI 정확도 평가 기준 변경 안내</td><td>품질팀</td><td>2026-04-10</td></tr>
-        <tr><td style="text-align:center;">12</td><td><span class="badge badge-muted">안내</span></td><td class="td-link" onclick="switchView('notice-detail',null)">신규 상담코드 추가 안내 (2026년 4월)</td><td>기획팀</td><td>2026-04-08</td></tr>
-        <tr><td style="text-align:center;">11</td><td><span class="badge badge-primary">공지</span></td><td class="td-link" onclick="switchView('notice-detail',null)">상담사 교육 일정 안내 (4월)</td><td>교육팀</td><td>2026-04-05</td></tr>
-        <tr><td style="text-align:center;">10</td><td><span class="badge badge-muted">안내</span></td><td class="td-link" onclick="switchView('notice-detail',null)">키워드 사전 업데이트 안내</td><td>AI팀</td><td>2026-04-03</td></tr>
-        <tr><td style="text-align:center;">9</td><td><span class="badge badge-muted">안내</span></td><td class="td-link" onclick="switchView('notice-detail',null)">3월 운영 리포트 공유</td><td>운영팀</td><td>2026-04-01</td></tr>
-        <tr><td style="text-align:center;">8</td><td><span class="badge badge-primary">공지</span></td><td class="td-link" onclick="switchView('notice-detail',null)">보안 정책 변경 안내</td><td>보안팀</td><td>2026-03-28</td></tr>
-        <tr><td style="text-align:center;">7</td><td><span class="badge badge-muted">안내</span></td><td class="td-link" onclick="switchView('notice-detail',null)">상담어드바이저 사용 가이드 v2</td><td>기획팀</td><td>2026-03-25</td></tr>
-        <tr><td style="text-align:center;">6</td><td><span class="badge badge-primary">공지</span></td><td class="td-link" onclick="switchView('notice-detail',null)">시스템 장애 복구 완료 안내</td><td>인프라팀</td><td>2026-03-22</td></tr>
-      </tbody></table>
+    <!-- 검색 -->
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="kw-search-wrap" style="flex:1;max-width:400px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#64748B" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>
+        <input type="text" class="kw-search-input" id="notice-search-input" placeholder="서비스명 또는 제목을 입력하세요" onkeydown="if(event.key==='Enter')doNoticeSearch()">
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="doNoticeSearch()">검색</button>
     </div>
-    <div class="pagination">
-      <span class="page-info">총 15건</span>
-      <div class="page-controls"><button class="btn btn-outline btn-sm" disabled>&lt;</button><span class="page-num">1 / 2</span><button class="btn btn-outline btn-sm">&gt;</button></div>
+    <!-- 목록 테이블 -->
+    <div id="notice-list-area">
+      <div class="table-container">
+        <table class="data-table"><thead><tr>
+          <th style="width:60px;text-align:center;">번호</th>
+          <th style="width:40px;text-align:center;">📌</th>
+          <th style="width:120px;">서비스</th>
+          <th>제목</th>
+          <th style="width:100px;">작성자</th>
+          <th style="width:120px;">최종 작성일 <span class="sort-icon">↕</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="text-align:center;">15</td><td style="text-align:center;">📌</td><td><span class="badge badge-muted">[전체]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">상담어드바이저 v3.2 업데이트 안내 <span class="badge badge-destructive" style="font-size:10px;padding:1px 5px;vertical-align:middle;">N</span></td><td>관리자</td><td>2026-04-15</td></tr>
+          <tr><td style="text-align:center;">14</td><td style="text-align:center;">📌</td><td><span class="badge badge-muted">[상담어드바이저]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">4월 시스템 정기점검 일정 안내 <span class="badge badge-destructive" style="font-size:10px;padding:1px 5px;vertical-align:middle;">N</span></td><td>관리자</td><td>2026-04-12</td></tr>
+          <tr><td style="text-align:center;">13</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[Auto QA]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">AI 정확도 평가 기준 변경 안내</td><td>품질팀</td><td>2026-04-10</td></tr>
+          <tr><td style="text-align:center;">12</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[상담어드바이저 +1]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">신규 상담코드 추가 안내 (2026년 4월)</td><td>기획팀</td><td>2026-04-08</td></tr>
+          <tr><td style="text-align:center;">11</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[전체]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">상담사 교육 일정 안내 (4월)</td><td>교육팀</td><td>2026-04-05</td></tr>
+          <tr><td style="text-align:center;">10</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[ixi-A]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">키워드 사전 업데이트 안내</td><td>AI팀</td><td>2026-04-03</td></tr>
+          <tr><td style="text-align:center;">9</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[상담어드바이저]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">3월 운영 리포트 공유</td><td>운영팀</td><td>2026-04-01</td></tr>
+          <tr><td style="text-align:center;">8</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[전체]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">보안 정책 변경 안내</td><td>보안팀</td><td>2026-03-28</td></tr>
+          <tr><td style="text-align:center;">7</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[상담어드바이저]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">상담어드바이저 사용 가이드 v2</td><td>기획팀</td><td>2026-03-25</td></tr>
+          <tr><td style="text-align:center;">6</td><td style="text-align:center;"></td><td><span class="badge badge-muted">[전체]</span></td><td class="td-link" onclick="switchView('notice-detail',null)">시스템 장애 복구 완료 안내</td><td>인프라팀</td><td>2026-03-22</td></tr>
+        </tbody></table>
+      </div>
+      <div class="kw-pagination">
+        <span class="kw-page-info">총 15건</span>
+        <div class="kw-page-controls">
+          <span class="page-num">1 / 2</span>
+          <button class="btn btn-outline btn-sm kw-page-btn" disabled>«</button>
+          <button class="btn btn-outline btn-sm kw-page-btn" disabled>‹</button>
+          <button class="btn btn-outline btn-sm kw-page-btn">›</button>
+          <button class="btn btn-outline btn-sm kw-page-btn">»</button>
+        </div>
+      </div>
+    </div>
+    <!-- 검색 결과 없음 -->
+    <div id="notice-empty" style="display:none;min-height:300px;display:none;align-items:center;justify-content:center;">
+      <div class="empty-state"><span class="empty-state-text">검색 결과가 없습니다.</span></div>
     </div>
   </div>
 </div><!-- /view-notice -->
 
 <!-- ============================================================ -->
-<!-- 화면 9-1: 공지사항 상세                                         -->
+<!-- 화면 9-1: 공지사항 상세 (게시글)                                 -->
 <!-- ============================================================ -->
 <div id="view-notice-detail" class="view">
-  <div style="margin-bottom:8px;">
-    <button class="btn btn-ghost btn-sm" onclick="switchView('notice',document.querySelector('[data-view=notice]'))">← 목록으로</button>
-  </div>
   <div class="card">
-    <div class="card-header" style="justify-content:space-between;align-items:center;">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span class="badge badge-primary">공지</span>
-        <h2 style="font-size:24px;font-weight:600;line-height:32px;color:#020617;">상담어드바이저 v3.2 업데이트 안내</h2>
+    <!-- 헤더: 서비스 + 제목 -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <h2 style="font-size:24px;font-weight:600;line-height:32px;color:#020617;">상담어드바이저 v3.2 업데이트 안내</h2>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline btn-sm">수정</button>
+          <button class="btn btn-outline btn-sm" style="color:#DC2626;border-color:#DC2626;" onclick="document.getElementById('notice-delete-modal').style.display='flex'">삭제</button>
+        </div>
       </div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-outline btn-sm">수정</button>
-        <button class="btn btn-outline btn-sm" style="color:#DC2626;border-color:#DC2626;">삭제</button>
+      <!-- 서비스 / 작성자 / 등록일 -->
+      <div style="display:flex;gap:16px;font-size:14px;color:#64748B;padding-bottom:16px;border-bottom:1px solid #E2E8F0;">
+        <span>서비스: 상담어드바이저, Auto QA</span>
+        <span>작성자: 관리자</span>
+        <span>최종 작성일: 2026-04-15</span>
       </div>
     </div>
-    <div style="display:flex;gap:16px;font-size:14px;color:#64748B;padding-bottom:16px;border-bottom:1px solid #E2E8F0;">
-      <span>작성자: 관리자</span><span>등록일: 2026-04-15</span>
+
+    <!-- 본문 이미지 -->
+    <div style="width:100%;border-radius:8px;overflow:hidden;background:#F1F5F9;display:flex;align-items:center;justify-content:center;min-height:240px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#94A3B8;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span style="font-size:13px;">이미지 영역</span>
+      </div>
     </div>
+
+    <!-- 본문 텍스트 -->
     <div class="notice-body">
       <p>안녕하세요, 상담어드바이저 운영팀입니다.</p>
       <p>상담어드바이저 v3.2 업데이트가 2026년 4월 15일부로 적용되었습니다. 주요 변경사항을 안내드립니다.</p>
@@ -1091,11 +1130,30 @@
       <p>- 적용일: 2026년 4월 15일 (수) 06:00<br>- 영향 범위: 전 채널 (모바일, 홈)</p>
       <p>문의사항은 운영팀으로 연락 부탁드립니다.</p>
     </div>
+
+    <!-- 첨부파일 -->
     <div style="border-top:1px solid #E2E8F0;padding-top:16px;">
       <span style="font-size:14px;font-weight:500;color:#020617;">첨부파일</span>
       <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
         <a href="#" style="font-size:14px;color:#7732F8;text-decoration:underline;">v3.2_업데이트_상세_안내.pdf</a>
+      </div>
+    </div>
+
+    <!-- 목록으로 버튼 -->
+    <div style="display:flex;justify-content:center;padding-top:8px;">
+      <button class="btn btn-outline" onclick="switchView('notice',document.querySelector('[data-view=notice]'))">목록으로</button>
+    </div>
+  </div>
+
+  <!-- 삭제 확인 모달 -->
+  <div id="notice-delete-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:14px;padding:32px;width:400px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+      <h3 style="font-size:18px;font-weight:600;color:#020617;margin-bottom:8px;">삭제</h3>
+      <p style="font-size:14px;color:#64748B;margin-bottom:24px;">정말 삭제하시겠습니까?</p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn btn-outline" onclick="document.getElementById('notice-delete-modal').style.display='none'">취소</button>
+        <button class="btn btn-primary" style="background:#DC2626;" onclick="document.getElementById('notice-delete-modal').style.display='none';switchView('notice',document.querySelector('[data-view=notice]'))">삭제</button>
       </div>
     </div>
   </div>
@@ -1105,46 +1163,143 @@
 <!-- 화면 9-2: 공지사항 글 작성                                      -->
 <!-- ============================================================ -->
 <div id="view-notice-write" class="view">
-  <div style="margin-bottom:8px;">
-    <button class="btn btn-ghost btn-sm" onclick="switchView('notice',document.querySelector('[data-view=notice]'))">← 목록으로</button>
-  </div>
   <div class="card">
     <div class="card-header"><div class="card-header-text"><span class="card-title">글 작성</span></div></div>
     <div class="form-grid">
+      <!-- 서비스 (체크박스 그룹) -->
       <div class="form-field">
-        <label class="form-label">분류 <span style="color:#DC2626;">*</span></label>
-        <select class="search-input" style="width:200px;"><option>공지</option><option>안내</option></select>
+        <label class="form-label">서비스 <span style="color:#DC2626;">*</span></label>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px;color:#020617;cursor:pointer;"><input type="checkbox" style="width:16px;height:16px;accent-color:#7732F8;" onchange="handleNoticeServiceCheck(this,'all')"> 전체</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px;color:#020617;cursor:pointer;"><input type="checkbox" class="notice-svc-item" style="width:16px;height:16px;accent-color:#7732F8;" onchange="handleNoticeServiceCheck(this,'item')"> Auto QA</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px;color:#020617;cursor:pointer;"><input type="checkbox" class="notice-svc-item" style="width:16px;height:16px;accent-color:#7732F8;" onchange="handleNoticeServiceCheck(this,'item')"> 상담어드바이저</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px;color:#020617;cursor:pointer;"><input type="checkbox" class="notice-svc-item" style="width:16px;height:16px;accent-color:#7732F8;" onchange="handleNoticeServiceCheck(this,'item')"> ixi-A</label>
+        </div>
+        <p style="font-size:12px;color:#64748B;margin-top:4px;">선택한 서비스에 대한 라이선스가 없는 사용자는 본 공지를 확인할 수 없습니다.</p>
       </div>
+      <!-- 제목 -->
       <div class="form-field">
         <label class="form-label">제목 <span style="color:#DC2626;">*</span></label>
-        <input type="text" class="search-input" placeholder="제목을 입력하세요" style="width:100%;">
+        <input type="text" class="search-input" placeholder="제목을 입력하세요 (최대 100자)" maxlength="100" style="width:100%;">
       </div>
     </div>
+    <!-- 본문 에디터 -->
     <div style="border-top:1px solid #E2E8F0;padding-top:16px;">
-      <!-- 에디터 툴바 -->
+      <label class="form-label" style="margin-bottom:8px;display:block;">본문 <span style="color:#DC2626;">*</span></label>
       <div class="editor-toolbar">
+        <select class="editor-tool" style="width:80px;"><option>글꼴</option></select>
         <select class="editor-tool" style="width:80px;"><option>본문</option><option>제목1</option><option>제목2</option></select>
+        <span style="width:1px;height:20px;background:#E2E8F0;margin:0 4px;"></span>
         <button class="editor-tool" title="굵게"><strong>B</strong></button>
         <button class="editor-tool" title="기울임"><em>I</em></button>
         <button class="editor-tool" title="취소선"><s>S</s></button>
         <button class="editor-tool" title="밑줄"><u>U</u></button>
-        <button class="editor-tool" title="왼쪽 정렬">≡</button>
-        <button class="editor-tool" title="이미지">🖼</button>
+        <span style="width:1px;height:20px;background:#E2E8F0;margin:0 4px;"></span>
+        <button class="editor-tool" title="왼쪽 정렬">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#020617" stroke-width="1.5"><path d="M2 3h12M2 6.5h8M2 10h12M2 13.5h8"/></svg>
+        </button>
+        <button class="editor-tool" title="가운데 정렬">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#020617" stroke-width="1.5"><path d="M2 3h12M4 6.5h8M2 10h12M4 13.5h8"/></svg>
+        </button>
+        <button class="editor-tool" title="오른쪽 정렬">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#020617" stroke-width="1.5"><path d="M2 3h12M6 6.5h8M2 10h12M6 13.5h8"/></svg>
+        </button>
+        <span style="width:1px;height:20px;background:#E2E8F0;margin:0 4px;"></span>
+        <button class="editor-tool" title="하이퍼링크">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#020617" stroke-width="1.5"><path d="M6.5 9.5a3 3 0 004.2.3l2-2a3 3 0 00-4.2-4.3l-1.1 1.1"/><path d="M9.5 6.5a3 3 0 00-4.2-.3l-2 2a3 3 0 004.2 4.3l1.1-1.1"/></svg>
+        </button>
+        <button class="editor-tool" title="이미지 삽입">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#020617" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="1.5"/><circle cx="5.5" cy="5.5" r="1"/><path d="M14 10l-3.5-3.5L4 13"/></svg>
+        </button>
       </div>
-      <div class="editor-body" contenteditable="true" style="min-height:300px;padding:16px;font-size:16px;line-height:24px;color:#020617;outline:none;" data-placeholder="내용을 입력하세요"></div>
+      <div class="editor-body" contenteditable="true" style="min-height:300px;padding:16px;font-size:16px;line-height:24px;color:#020617;outline:none;" data-placeholder="내용을 입력하세요. 텍스트, 하이퍼링크, 이미지를 포함할 수 있습니다."></div>
     </div>
+    <!-- 첨부파일 -->
     <div style="border-top:1px solid #E2E8F0;padding-top:16px;">
-      <div style="display:flex;align-items:center;gap:16px;">
-        <button class="btn btn-outline btn-sm">📎 파일 첨부</button>
+      <label class="form-label" style="margin-bottom:8px;display:block;">첨부파일</label>
+      <div style="display:flex;align-items:center;gap:8px;padding:12px;border:1px dashed #E2E8F0;border-radius:8px;cursor:pointer;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        <span style="font-size:14px;color:#64748B;">첨부파일을 클릭하여 업로드하세요 (개별 최대 50MB, 총 100MB)</span>
+      </div>
+      <p style="font-size:12px;color:#64748B;margin-top:4px;">허용 확장자: jpg, png, gif, pdf, docx, xlsx, pptx, zip</p>
+    </div>
+    <!-- 상단 고정 설정 -->
+    <div style="border-top:1px solid #E2E8F0;padding-top:16px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span class="switch-label">상단 고정</span>
+        <label class="switch"><input type="checkbox" id="notice-pin-toggle" onchange="toggleNoticePinDates()"><span class="switch-slider"></span></label>
+      </div>
+      <div id="notice-pin-dates" style="display:none;display:none;gap:12px;align-items:center;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:13px;color:#64748B;">시작</span>
+          <input type="datetime-local" class="search-input" style="width:200px;font-size:13px;">
+        </div>
+        <span style="color:#64748B;">~</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:13px;color:#64748B;">종료</span>
+          <input type="datetime-local" class="search-input" style="width:200px;font-size:13px;">
+        </div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:24px;border-top:1px solid #E2E8F0;padding-top:16px;">
-      <div class="switch-wrap"><span class="switch-label">상단 고정</span><label class="switch"><input type="checkbox"><span class="switch-slider"></span></label></div>
-      <div class="switch-wrap"><span class="switch-label">배너 노출</span><label class="switch"><input type="checkbox"><span class="switch-slider"></span></label></div>
+    <!-- 배너 노출 설정 -->
+    <div style="border-top:1px solid #E2E8F0;padding-top:16px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span class="switch-label">배너 노출</span>
+        <label class="switch"><input type="checkbox" id="notice-banner-toggle" onchange="toggleNoticeBannerDates()"><span class="switch-slider"></span></label>
+      </div>
+      <div id="notice-banner-dates" style="display:none;display:none;gap:12px;align-items:center;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:13px;color:#64748B;">시작</span>
+          <input type="datetime-local" class="search-input" style="width:200px;font-size:13px;">
+        </div>
+        <span style="color:#64748B;">~</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:13px;color:#64748B;">종료</span>
+          <input type="datetime-local" class="search-input" style="width:200px;font-size:13px;">
+        </div>
+      </div>
     </div>
-    <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:16px;">
-      <button class="btn btn-outline" onclick="switchView('notice',document.querySelector('[data-view=notice]'))">취소</button>
-      <button class="btn btn-primary">등록</button>
+    <!-- 하단 버튼 -->
+    <div style="display:flex;justify-content:flex-end;gap:8px;border-top:1px solid #E2E8F0;padding-top:16px;">
+      <button class="btn btn-outline" onclick="showNoticeLeaveModal()">취소</button>
+      <button class="btn btn-outline" onclick="showNoticeTempSaveModal()">임시 저장</button>
+      <button class="btn btn-primary" onclick="showNoticePublishModal()">게시</button>
+    </div>
+  </div>
+
+  <!-- 페이지 이탈 확인 모달 -->
+  <div id="notice-leave-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:14px;padding:32px;width:400px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+      <h3 style="font-size:18px;font-weight:600;color:#020617;margin-bottom:8px;">페이지 나가기</h3>
+      <p style="font-size:14px;color:#64748B;margin-bottom:24px;">저장되지 않은 내용은 모두 사라집니다.<br>페이지를 벗어나시겠습니까?</p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn btn-outline" onclick="document.getElementById('notice-leave-modal').style.display='none'">취소</button>
+        <button class="btn btn-primary" onclick="document.getElementById('notice-leave-modal').style.display='none';switchView('notice',document.querySelector('[data-view=notice]'))">나가기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 임시 저장 모달 -->
+  <div id="notice-temp-save-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:14px;padding:32px;width:400px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+      <h3 style="font-size:18px;font-weight:600;color:#020617;margin-bottom:8px;">임시 저장</h3>
+      <p style="font-size:14px;color:#64748B;margin-bottom:24px;">임시 저장한 내용은 7일간 보관되며, 해당 기간이 지나면 자동 삭제됩니다.<br><span style="color:#DC2626;">*이전 임시 저장본은 최신 저장본으로 덮어쓰여집니다.</span></p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn btn-outline" onclick="document.getElementById('notice-temp-save-modal').style.display='none'">취소</button>
+        <button class="btn btn-primary" onclick="document.getElementById('notice-temp-save-modal').style.display='none'">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 게시 확인 모달 -->
+  <div id="notice-publish-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:14px;padding:32px;width:400px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+      <h3 style="font-size:18px;font-weight:600;color:#020617;margin-bottom:8px;">새 글 게시</h3>
+      <p style="font-size:14px;color:#64748B;margin-bottom:24px;">글을 게시하겠습니까?</p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn btn-outline" onclick="document.getElementById('notice-publish-modal').style.display='none'">취소</button>
+        <button class="btn btn-primary" onclick="document.getElementById('notice-publish-modal').style.display='none';switchView('notice',document.querySelector('[data-view=notice]'))">게시</button>
+      </div>
     </div>
   </div>
 </div><!-- /view-notice-write -->
