@@ -280,7 +280,7 @@ switchView = function(view, btn) {
   if (updateTime) updateTime.style.display = (view === 'keywords' || view === 'codes') ? '' : 'none';
 
   var callBtn = document.getElementById('header-call-btn');
-  if (callBtn) callBtn.className = (view === 'consult' || view === 'consult-detail' || view === 'ai-eval') ? 'header-call-btn show' : 'header-call-btn';
+  if (callBtn) callBtn.className = (view === 'consult-detail' || view === 'ai-eval') ? 'header-call-btn show' : 'header-call-btn';
 
   var evalBtn = document.getElementById('header-eval-btn');
   if (evalBtn) evalBtn.style.display = (view === 'ai-eval') ? '' : 'none';
