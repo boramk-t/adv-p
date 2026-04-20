@@ -277,7 +277,7 @@ const origSwitchView = switchView;
 switchView = function(view, btn) {
   origSwitchView(view, btn);
   var updateTime = document.getElementById('header-update-time');
-  if (updateTime) updateTime.style.display = (view === 'keywords' || view === 'codes') ? '' : 'none';
+  if (updateTime) updateTime.style.display = (view === 'home' || view === 'keywords' || view === 'codes') ? '' : 'none';
 
   var callBtn = document.getElementById('header-call-btn');
   if (callBtn) callBtn.className = (view === 'consult-detail' || view === 'ai-eval') ? 'header-call-btn show' : 'header-call-btn';
