@@ -118,7 +118,7 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#020617;font-s
 .filter-trigger{height:32px;padding:4px 28px 4px 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='%2364748B' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") right 8px center no-repeat;font-family:'Pretendard';font-size:14px;font-weight:500;color:#020617;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05);white-space:nowrap;}
 .filter-trigger:hover{background-color:#F8FAFC;}
 .filter-trigger.open{border-color:#7732F8;}
-.filter-panel{position:absolute;top:calc(100% + 4px);left:0;min-width:180px;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);padding:8px;z-index:50;display:none;}
+.filter-panel{position:absolute;top:calc(100% + 4px);left:0;min-width:180px;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);padding:8px;z-index:50;display:none;max-height:320px;overflow-y:auto;}
 .filter-panel.show{display:block;}
 .filter-option{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:14px;color:#020617;}
 .filter-option:hover{background:#F1F5F9;}
