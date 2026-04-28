@@ -119,12 +119,12 @@
 <!-- ============================================================ -->
 <div id="view-home" class="view active">
   <div class="tabs">
-    <button class="tab-trigger active" onclick="toggleHomeTab(this,'home-mobile')">모바일</button>
-    <button class="tab-trigger" onclick="toggleHomeTab(this,'home-home')">홈</button>
+    <button class="tab-trigger" onclick="toggleHomeTab(this,'home-mobile')">모바일</button>
+    <button class="tab-trigger active" onclick="toggleHomeTab(this,'home-home')">홈</button>
   </div>
 
   <!-- ===== 모바일 탭 콘텐츠 ===== -->
-  <div id="home-mobile" class="home-tab-content" style="display:flex;flex-direction:column;gap:16px;">
+  <div id="home-mobile" class="home-tab-content" style="display:none;flex-direction:column;gap:16px;">
   <!-- Row 1: 도넛(332) + 통계카드 2개(804, 세로) -->
   <div class="row">
     <div class="card" style="width:332px;flex-shrink:0;">
@@ -245,7 +245,7 @@
   </div><!-- /home-mobile -->
 
   <!-- ===== 홈 탭 콘텐츠 ===== -->
-  <div id="home-home" class="home-tab-content" style="display:none;flex-direction:column;gap:16px;">
+  <div id="home-home" class="home-tab-content" style="display:flex;flex-direction:column;gap:16px;">
   <!-- Row 1 -->
   <div class="row">
     <div class="card" style="width:332px;flex-shrink:0;">
