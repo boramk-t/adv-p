@@ -342,10 +342,74 @@ function resetAiManageSearch() {
   }
 }
 
+/* ===== AI Eval: Layout step navigation (Layout 1~7) ===== */
+var currentEvalLayout = 6; // start at Layout 6 (empty state)
+var evalLayouts = [1, 2, 3, 5, 6, 7]; // Layout 4 is the modal
+
+function goEvalLayout(num) {
+  // Hide all layouts
+  evalLayouts.forEach(function(n) {
+    var el = document.getElementById('eval-layout-' + n);
+    if (el) el.style.display = 'none';
+  });
+
+  // Layout 4 = modal
+  if (num === 4) {
+    var modal = document.getElementById('eval-modal');
+    if (modal) modal.style.display = 'flex';
+    currentEvalLayout = 4;
+    return;
+  }
+
+  // Hide modal if coming back from it
+  var modal = document.getElementById('eval-modal');
+  if (modal) modal.style.display = 'none';
+
+  // Show target layout
+  var target = document.getElementById('eval-layout-' + num);
+  if (target) target.style.display = (num === 6) ? 'flex' : '';
+
+  currentEvalLayout = num;
+
+  // Update count & button state
+  var count = document.getElementById('eval-selected-count');
+  var btn = document.getElementById('eval-complete-btn');
+  if (num === 6) {
+    if (count) count.textContent = '00';
+    if (btn) { btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none'; }
+  } else if (num === 7) {
+    if (count) count.textContent = '3';
+    if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+  } else {
+    if (count) count.textContent = '3';
+    if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+  }
+
+  // Update STT badge
+  var sttTab = document.querySelector('.eval-tabs [data-eval-tab="eval-stt"]');
+  if (sttTab) {
+    var badge = sttTab.querySelector('.eval-tab-badge');
+    if (badge) {
+      if (num === 1) {
+        badge.textContent = '평가 완료';
+        badge.className = 'eval-tab-badge badge badge-muted';
+        badge.style.display = '';
+        badge.style.marginLeft = '4px';
+        badge.style.fontSize = '11px';
+      } else {
+        badge.textContent = '평가중';
+        badge.className = 'eval-tab-badge badge badge-primary';
+        badge.style.display = '';
+        badge.style.marginLeft = '4px';
+        badge.style.fontSize = '11px';
+      }
+    }
+  }
+}
+
 /* ===== AI Eval Modal ===== */
 function showEvalCompleteModal() {
-  var modal = document.getElementById('eval-modal');
-  if (modal) modal.style.display = 'flex';
+  goEvalLayout(4);
 }
 function hideEvalCompleteModal() {
   var modal = document.getElementById('eval-modal');
@@ -356,15 +420,13 @@ function hideEvalCompleteModal() {
 document.addEventListener('click', function(e) {
   var bubble = e.target.closest('#view-ai-eval .detail-stt .chat-bubble');
   if (bubble) {
-    var empty = document.getElementById('eval-stt-empty');
-    var cards = document.getElementById('eval-stt-cards');
-    if (empty) empty.style.display = 'none';
-    if (cards) cards.style.display = '';
-    // Update count
-    var count = document.getElementById('eval-selected-count');
-    if (count) {
-      var n = parseInt(count.textContent) || 0;
-      count.textContent = n + 1;
+    // From Layout 6 (empty) -> Layout 7 (1 card)
+    if (currentEvalLayout === 6) {
+      goEvalLayout(7);
+    }
+    // From Layout 7 (1 card) -> Layout 2 (2 cards, 평가중)
+    else if (currentEvalLayout === 7) {
+      goEvalLayout(2);
     }
   }
 });
@@ -380,20 +442,16 @@ var evalTabStatus = { 'eval-stt': 'progress', 'eval-code': 'none', 'eval-summary
 
 function switchEvalTab(el, tabId) {
   var card = el.closest('.card');
-  // Toggle tab triggers
   card.querySelectorAll('.tab-trigger').forEach(function(t) { t.classList.remove('active'); });
   el.classList.add('active');
-  // Toggle tab content
   card.querySelectorAll('.eval-tab-content').forEach(function(c) { c.classList.remove('active'); });
   var target = document.getElementById(tabId);
   if (target) target.classList.add('active');
 
-  // Set status to "평가중" if first time entering this tab (not yet completed)
   if (evalTabStatus[tabId] === 'none') {
     evalTabStatus[tabId] = 'progress';
   }
 
-  // Update all badges
   card.querySelectorAll('.tab-trigger').forEach(function(t) {
     var tid = t.getAttribute('data-eval-tab');
     var badge = t.querySelector('.eval-tab-badge');
@@ -422,7 +480,6 @@ function switchEvalTab(el, tabId) {
 /* ===== Mark tab as complete ===== */
 function completeEvalTab(tabId) {
   evalTabStatus[tabId] = 'done';
-  // Re-render badges
   var activeTab = document.querySelector('.eval-tabs .tab-trigger.active');
   if (activeTab) switchEvalTab(activeTab, activeTab.getAttribute('data-eval-tab'));
 }
